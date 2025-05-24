@@ -3,10 +3,12 @@ name = "tesisexcel-procesor"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.8"
 dependencies = [
     "openpyxl>=3.1.5",
-    "pandas>=2.2.3",
-    "sqlalchemy>=2.0.40",
-    "streamlit>=1.45.0",
+    "pandas>=2.0.3",
+    "rich>=13.9.4",
+    "sqlalchemy>=2.0.41",
+    "streamlit>=1.40.1",
+    "tabulate>=0.9.0",
 ]
