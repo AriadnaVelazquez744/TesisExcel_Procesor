@@ -9,6 +9,7 @@ from excel_processor import procesar_excel
 from database import crear_tabla, DefensaTesis
 from sqlalchemy import create_engine, Date, Time, String, text
 from tabulate import tabulate
+import tables_design as tb
 
 class AplicacionConsola:
     def __init__(self):
@@ -91,14 +92,8 @@ class AplicacionConsola:
                         '13:00', '14:00', '15:00', '16:00'
                     ])
                     
-                    print("\n📅 Horarios del profesor:")
-                    print(tabulate(
-                        tabla_pivote,
-                        headers='keys',
-                        tablefmt='fancy_grid',
-                        stralign='center'
-                    ))
-                    
+                    tb.print_rich_pivot_table(tabla_pivote, title=f"📅 Horarios del profesor {nombre_prof}")
+
                     # Calcular estadísticas
                     libres = resultados[resultados['Libre'] == 1]
                     total_libres = len(libres)
@@ -119,8 +114,8 @@ class AplicacionConsola:
         try:
             self.df = procesar_excel(ruta_archivo)
             print("\n✅ Archivo procesado correctamente")
-            print(tabulate(self.df.head(3), headers='keys', tablefmt='psql'))
-            
+            tb.print_rich_df_preview(self.df.head(3), title="Vista previa del archivo procesado")
+
             guardar = input("\n¿Desea guardar en base de datos? (s/n): ").lower()
             if guardar == 's':
                 self.guardar_en_bd()  # Llamar al método modificado
@@ -193,16 +188,18 @@ class AplicacionConsola:
                 resultados = pd.read_sql_query(consulta_sql, conn)
                 if not resultados.empty:
                     # Resaltar coincidencias
-                    resultados = resultados.map(lambda x: f"\033[93m{x}\033[0m" if isinstance(x,str) and any(rol in x for rol in ['tutor','presidente','miembro','oponente']) else x)
+                    # resultados = resultados.map(lambda x: f"\033[93m{x}\033[0m" if isinstance(x,str) and any(rol in x for rol in ['tutor','presidente','miembro','oponente']) else x)
                     
-                    print(tabulate(
-                        resultados[['fecha', 'estudiante', 'tutores', 'presidente', 
-                                'miembro_1', 'miembro_2', 'oponente', 'lugar']],
-                        headers=['Fecha', 'Estudiante', 'Tutores', 'Presidente', 
-                            'Miembro 1', 'Miembro 2', 'Oponente', 'Lugar'],
-                        tablefmt='fancy_grid',
-                        showindex=False
-                    ))
+                    # print(tabulate(
+                    #     resultados[['fecha', 'estudiante', 'tutores', 'presidente', 
+                    #             'miembro_1', 'miembro_2', 'oponente', 'lugar']],
+                    #     headers=['Fecha', 'Estudiante', 'Tutores', 'Presidente', 
+                    #         'Miembro 1', 'Miembro 2', 'Oponente', 'Lugar'],
+                    #     tablefmt='fancy_grid',
+                    #     showindex=False
+                    # ))
+                    tb.print_rich_query_results(resultados[['fecha', 'estudiante', 'tutores', 'presidente', 
+                        'miembro_1', 'miembro_2', 'oponente', 'lugar']], title="Resultados de la consulta")
                     print(f"\n📊 Total de defensas encontradas: {len(resultados)}")
                 else:
                     print("\n⚠️ No se encontraron defensas para este profesor")
@@ -333,8 +330,9 @@ class AplicacionConsola:
                 
                 if not resultados.empty:
                     print(f"\n🔍 Resultados ({len(resultados)} registros):")
-                    print(tabulate(resultados, headers='keys', tablefmt='psql', showindex=False))
-                    
+                    # print(tabulate(resultados, headers='keys', tablefmt='psql', showindex=False))
+                    tb.print_rich_sql_results(resultados, title="Resultados SQL")
+
                     # Opción para guardar resultados
                     guardar = input("\n¿Desea exportar a CSV? (s/n): ").lower()
                     if guardar == 's':
