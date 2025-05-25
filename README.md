@@ -36,7 +36,7 @@ Este proyecto permite gestionar, consultar y visualizar calendarios de defensas 
 1. 🛠️ Clona el repositorio:
 
    ```bash
-   git clone https://github.com/tu_usuario/tesisexcel-procesor.git
+   git clone https://github.com/LiaLopezRosales/TesisExcel_Procesor.git
    cd tesisexcel-procesor
    ```
 
