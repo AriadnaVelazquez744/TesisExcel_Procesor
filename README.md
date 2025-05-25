@@ -44,7 +44,11 @@ Este proyecto permite gestionar, consultar y visualizar calendarios de defensas 
 
    ```bash
    pip install -r requirements.txt
-   # O usando pyproject.toml:
+   ```
+   
+   O usando pyproject.toml:
+
+   ```bash
    pip install .
    ```
 
