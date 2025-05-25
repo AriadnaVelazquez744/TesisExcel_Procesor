@@ -21,10 +21,9 @@ class AplicacionConsola:
         print("\n=== MENÚ PRINCIPAL ===")
         print("1. Procesar archivo Excel")
         print("2. Consultar defensas")
-        print("3. Estadísticas generales")
-        print("4. Consulta SQL personalizada")
-        print("5. Modificar base de datos (DB Browser)")  # Nueva opción
-        print("6. Salir")
+        print("3. Consulta SQL personalizada")
+        print("4. Modificar base de datos (DB Browser)")  # Nueva opción
+        print("5. Salir")
         return input("Seleccione una opción: ")
     
     def horarios_libres_profesor(self):
@@ -268,33 +267,6 @@ class AplicacionConsola:
             consulta = f"SELECT * FROM defensas_tesis WHERE {campo} LIKE '%{valor}%'"
             self.ejecutar_consulta(consulta)
 
-    def mostrar_estadisticas(self):
-        consultas = {
-            "Tutores más activos": """
-                SELECT tutores, COUNT(*) as total 
-                FROM defensas_tesis 
-                GROUP BY tutores 
-                ORDER BY total DESC 
-                LIMIT 5
-            """,
-            "Oponentes más frecuentes": """
-                SELECT oponente, COUNT(*) as total 
-                FROM defensas_tesis 
-                GROUP BY oponente 
-                ORDER BY total DESC 
-                LIMIT 5
-            """,
-            "Distribución por lugar": """
-                SELECT lugar, COUNT(*) as total 
-                FROM defensas_tesis 
-                GROUP BY lugar 
-                ORDER BY total DESC
-            """
-        }
-        
-        for nombre, sql in consultas.items():
-            print(f"\n📊 {nombre}")
-            self.ejecutar_consulta(sql)
     
     def consulta_personalizada(self):
         print("\n=== CONSULTA SQL PERSONALIZADA ===")
@@ -361,13 +333,11 @@ class AplicacionConsola:
                 self.procesar_archivo(ruta)
             elif opcion == '2':
                 self.menu_consultas()
-            elif opcion == '3':
-                self.mostrar_estadisticas()
-            elif opcion == '4':  # Nueva opción
+            elif opcion == '3':  # Nueva opción
                 self.consulta_personalizada()
-            elif opcion == '5':
+            elif opcion == '4':
                 print("\n Ejecutar desde terminal: ./OpenBrowser.sh database.db ( si es la primera vez ejecute antes: chmod +x abrir_db_browser.sh) ")
-            elif opcion == '6':
+            elif opcion == '5':
                 print("\n👋 ¡Hasta pronto!")
                 break
             else:
