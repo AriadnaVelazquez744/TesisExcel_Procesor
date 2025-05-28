@@ -15,11 +15,9 @@ Este proyecto permite gestionar, consultar y visualizar calendarios de defensas 
 - 📥 **Procesamiento de archivos Excel**: Importa y normaliza calendarios de defensas.
 - 🗄️ **Base de datos SQLite**: Almacena la información usando SQLAlchemy.
 - 🔎 **Consultas avanzadas**: Filtra por fecha, estudiante, tutor, oponente, lugar, y más.
-- 📈 **Estadísticas**: Muestra tutores más activos, oponentes frecuentes, distribución por lugar, etc.
 - 🖥️ **Visualización en consola**: Tablas coloridas y autoajustables usando rich
 - 🌐 **Interfaz web**: Visualización y gestión vía Streamlit.
 - 📤 **Exportación**: Resultados exportables a CSV.
-- 🛠️ **Edición manual**: Abre la base de datos en DB Browser con un solo comando.
 
 ---
 
@@ -66,7 +64,6 @@ python consola_app.py
 
 - Procesar archivo Excel y cargarlo a la base de datos.
 - Consultar defensas por filtros.
-- Ver estadísticas generales.
 - Realizar consultas SQL personalizadas (solo SELECT).
 - Exportar resultados a CSV.
 - Abrir la base de datos en DB Browser:
@@ -74,6 +71,43 @@ python consola_app.py
     ``` bash  
     ./OpenBrowser.sh defensas.db
     ```
+
+1. Procesar archivo Excel
+
+    Seleccione opción 1
+
+    Ingrese ruta del archivo Excel
+
+    Vista previa de datos procesados
+
+    Confirme guardado en base de datos
+
+    Elija nombre del archivo .db
+
+2. Consultar defensas
+   
+    Seleccione opción 2
+
+    Seleccione filtro
+
+    Ingrese parámetro requerido
+
+Filtros disponibles:
+
+    Por fecha (YYYY-MM-DD)
+
+    Por estudiante (búsqueda parcial)
+
+    Por profesor (cualquier rol, tutor, oponente, horario)
+
+    Por lugar
+
+3. Consultas SQL personalizadas
+    Seleccione opción 3
+
+    Ingresar consulta SQL respetando las restricciones que se mencionan
+
+    Exportar a CSV si se desea
 
 ---
 
