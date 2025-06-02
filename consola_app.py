@@ -29,13 +29,10 @@ class AplicacionConsola:
     def horarios_libres_profesor(self):
         print("\n=== HORARIOS LIBRES POR PROFESOR ===")
         nombre_prof = input("Ingrese nombre del profesor: ").strip()
-        
+
+        # Consulta para obtener las fechas donde participa el profesor y todas las horas posibles del sistema
         query = """
-        WITH all_hours AS (
-            SELECT '10:00' AS hora UNION SELECT '11:00' UNION SELECT '12:00' 
-            UNION SELECT '13:00' UNION SELECT '14:00' UNION SELECT '15:00' UNION SELECT '16:00'
-        ),
-        dias_profesor AS (
+        WITH dias_profesor AS (
             SELECT DISTINCT fecha 
             FROM defensas_tesis 
             WHERE 
@@ -56,55 +53,62 @@ class AplicacionConsola:
                 miembro_1 LIKE :profesor OR
                 miembro_2 LIKE :profesor OR
                 oponente LIKE :profesor
+        ),
+        todas_horas AS (
+            SELECT DISTINCT substr(hora,1,5) AS hora
+            FROM defensas_tesis
         )
         SELECT 
-            dp.fecha AS 'Fecha',
-            ah.hora AS 'Hora',
+            dp.fecha AS Fecha,
+            th.hora AS Hora,
             CASE WHEN ho.hora IS NULL THEN 1 ELSE 0 END AS Libre
         FROM dias_profesor dp
-        CROSS JOIN all_hours ah
+        CROSS JOIN todas_horas th
         LEFT JOIN horas_ocupadas ho 
             ON dp.fecha = ho.fecha 
-            AND ah.hora = ho.hora
-        ORDER BY dp.fecha, ah.hora;
+            AND th.hora = ho.hora
+        ORDER BY dp.fecha, th.hora;
         """
-        
+
         try:
             with self.engine.connect() as conn:
                 params = {'profesor': f'%{nombre_prof}%'}
                 resultados = pd.read_sql(text(query), conn, params=params)
-                
+
                 if not resultados.empty:
-                    # Convertir a formato legible
+                    # Formatear fecha a dd/mm/YYYY
                     resultados['Fecha'] = pd.to_datetime(resultados['Fecha']).dt.strftime('%d/%m/%Y')
+                    # Asignar 🟢 Libre o 🔴 Ocupado
                     resultados['Estado'] = np.where(resultados['Libre'] == 1, '🟢 Libre', '🔴 Ocupado')
-                    
-                    # Crear tabla pivote con todas las horas
+
+                    # Obtener lista dinámica de horas (ordenada)
+                    horas_unicas = sorted(resultados['Hora'].unique())
+
+                    # Crear tabla pivote usando las horas dinámicas
                     tabla_pivote = resultados.pivot_table(
                         index='Fecha',
                         columns='Hora',
                         values='Estado',
                         aggfunc='first',
-                        fill_value='🔴 Ocupado'  # Asumir ocupado si no está en los resultados
-                    ).reindex(columns=[
-                        '10:00', '11:00', '12:00', 
-                        '13:00', '14:00', '15:00', '16:00'
-                    ])
-                    
-                    tb.print_rich_pivot_table(tabla_pivote, title=f"📅 Horarios del profesor {nombre_prof}")
+                        fill_value='🔴 Ocupado'
+                    ).reindex(columns=horas_unicas)
+
+                    # Mostrar la tabla pivote
+                    print(f"\n                    📅 Horarios del profesor {nombre_prof}                     ")
+                    print(tabla_pivote.to_string())
 
                     # Calcular estadísticas
                     libres = resultados[resultados['Libre'] == 1]
                     total_libres = len(libres)
                     horas_por_dia = libres.groupby('Fecha').size()
-                    
+
                     print(f"\n📊 Estadísticas:")
                     print(f"- Total de horas libres: {total_libres}")
                     print(f"- Horas libres por día:\n{horas_por_dia.to_string()}")
-                    
+
                 else:
-                    print("\n⚠️ El profesor no tiene defensas registradas")
-                    
+                    print("\n⚠️ El profesor no tiene defensas registradas en el sistema.")
+
         except Exception as e:
             print(f"\n❌ Error: {str(e)}")
 
