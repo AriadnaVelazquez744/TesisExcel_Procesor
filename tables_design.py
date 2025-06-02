@@ -5,7 +5,7 @@ from rich.table import Table
 
 def print_rich_pivot_table(df, title="Horarios del profesor"):
     console = Console()
-    table = Table(title=title, title_style="bold italic red", show_lines=True, border_style="green", header_style="bold italic blue")
+    table = Table(title=title, title_style="bold italic red", show_lines=True, border_style="green", header_style="bold italic blue", caption="🟢 => Libre    🔴 => Ocupado")
     table.add_column("Fecha", style="bold italic cyan")
     for col in df.columns:
         table.add_column(str(col), style="italic bright_white", overflow="fold")

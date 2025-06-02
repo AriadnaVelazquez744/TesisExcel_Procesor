@@ -79,7 +79,7 @@ class AplicacionConsola:
                     # Formatear fecha a dd/mm/YYYY
                     resultados['Fecha'] = pd.to_datetime(resultados['Fecha']).dt.strftime('%d/%m/%Y')
                     # Asignar 🟢 Libre o 🔴 Ocupado
-                    resultados['Estado'] = np.where(resultados['Libre'] == 1, '🟢 Libre', '🔴 Ocupado')
+                    resultados['Estado'] = np.where(resultados['Libre'] == 1, '🟢', '🔴')
 
                     # Obtener lista dinámica de horas (ordenada)
                     horas_unicas = sorted(resultados['Hora'].unique())
@@ -90,21 +90,20 @@ class AplicacionConsola:
                         columns='Hora',
                         values='Estado',
                         aggfunc='first',
-                        fill_value='🔴 Ocupado'
+                        fill_value='🔴'
                     ).reindex(columns=horas_unicas)
 
                     # Mostrar la tabla pivote
-                    print(f"\n                    📅 Horarios del profesor {nombre_prof}                     ")
-                    print(tabla_pivote.to_string())
+                    tb.print_rich_pivot_table(tabla_pivote, title=f"📅 Horarios del profesor {nombre_prof}")
 
                     # Calcular estadísticas
                     libres = resultados[resultados['Libre'] == 1]
                     total_libres = len(libres)
-                    horas_por_dia = libres.groupby('Fecha').size()
+                    sesiones_por_dia = libres.groupby('Fecha').size()
 
                     print(f"\n📊 Estadísticas:")
-                    print(f"- Total de horas libres: {total_libres}")
-                    print(f"- Horas libres por día:\n{horas_por_dia.to_string()}")
+                    print(f"- Total de sesiones libres: {total_libres}")
+                    print(f"- Sesiones libres por día:\n{sesiones_por_dia.to_string()}")
 
                 else:
                     print("\n⚠️ El profesor no tiene defensas registradas en el sistema.")
