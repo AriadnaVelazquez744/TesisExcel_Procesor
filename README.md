@@ -123,3 +123,12 @@ streamlit run gui.py
 - `tables_design.py`: Tablas coloridas en consola con rich.
 - `OpenBrowser.sh`: Script para abrir la base de datos en DB Browser.
 - `pyproject.toml`: Dependencias y metadatos del proyecto.
+
+---
+
+## Créditos
+
+Desarrollado por:
+
+- [Lia S. López Rosales](https://github.com/LiaLopezRosales)
+- [Ariadna Velázquez Rey](https://github.com/AriadnaVelazquez744)
