@@ -72,42 +72,33 @@ python consola_app.py
     ./OpenBrowser.sh defensas.db
     ```
 
+**Pasos de uso**
 1. Procesar archivo Excel
 
-    Seleccione opción 1
-
-    Ingrese ruta del archivo Excel
-
-    Vista previa de datos procesados
-
-    Confirme guardado en base de datos
-
-    Elija nombre del archivo .db
+- Seleccione opción 1
+- Ingrese ruta del archivo Excel
+- Vista previa de datos procesados
+- Confirme guardado en base de datos
+- Elija nombre del archivo .db
 
 2. Consultar defensas
    
-    Seleccione opción 2
+- Seleccione opción 2
+- Seleccione filtro
+- Ingrese parámetro requerido
 
-    Seleccione filtro
+  2.1. Filtros disponibles:
 
-    Ingrese parámetro requerido
-
-Filtros disponibles:
-
-    Por fecha (YYYY-MM-DD)
-
-    Por estudiante (búsqueda parcial)
-
-    Por profesor (cualquier rol, tutor, oponente, horario)
-
-    Por lugar
+   - Por fecha (YYYY-MM-DD)
+   - Por estudiante (búsqueda parcial)
+   - Por profesor (cualquier rol, tutor, oponente, horario)
+   - Por lugar
 
 3. Consultas SQL personalizadas
-    Seleccione opción 3
 
-    Ingresar consulta SQL respetando las restricciones que se mencionan
-
-    Exportar a CSV si se desea
+- Seleccione opción 3
+- Ingresar consulta SQL respetando las restricciones que se mencionan
+- Exportar a CSV si se desea
 
 ---
 
@@ -132,3 +123,12 @@ streamlit run gui.py
 - `tables_design.py`: Tablas coloridas en consola con rich.
 - `OpenBrowser.sh`: Script para abrir la base de datos en DB Browser.
 - `pyproject.toml`: Dependencias y metadatos del proyecto.
+
+---
+
+## Créditos
+
+Desarrollado por:
+
+- [Lia S. López Rosales](https://github.com/LiaLopezRosales)
+- [Ariadna Velázquez Rey](https://github.com/AriadnaVelazquez744)
